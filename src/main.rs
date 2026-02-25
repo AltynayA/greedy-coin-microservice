@@ -2,6 +2,7 @@ use axum::extract::Path;
 use axum::{routing::get, Json, Router};
 use rust_axum_greedy_coin_microservice::greedy_coin_change;
 use serde_json::json;
+use rust_decimal::Decimal;
 
 //Root Route for Change Machine
 async fn root() -> &'static str {
@@ -15,7 +16,8 @@ async fn root() -> &'static str {
 
 async fn change(Path((dollars, cents)): Path<(u32, u32)>) -> impl axum::response::IntoResponse {
     // Convert to cents amount
-    let amount = dollars * 100 + cents;
+    let amount = Decimal::from
+    (dollars * 100 + cents);
     let change = greedy_coin_change(amount);
     let json = json!({
      "dollars": dollars,
